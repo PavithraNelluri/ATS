@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth_styles.css') }}" />
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Enter OTP sent to your email</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    
+    <form method="POST">
+      <div class="input-wrapper">
+        <input type="text" name="otp" placeholder="Enter OTP" required />
+      </div>
+      <button class="btn jobseeker-btn" type="submit">Verify</button>
+      <p>Didn't receive the OTP? <a href="{{ url_for('resend_otp') }}">Resend OTP</a></p>
+    </form>
+  </div>
+</body>
+</html>

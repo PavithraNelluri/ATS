@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recruiter Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/recruiter_analyzer.css') }}">
+</head>
+
+<body>
+  {% include 'navbar.html' %}
+  <!-- Flash Message Container -->
+  <div id="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-box flash-{{ category }}">
+            <span class="flash-close" onclick="this.parentElement.remove()">×</span>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="analyzer-container">
+    <h2 class="analyzer-title">Resume Analyzer</h2>
+
+    <form id="analyzer-form" action="/recruiter_analyser" method="POST" enctype="multipart/form-data">
+      <label for="resume-upload">Upload Candidate Resume (PDF only):</label>
+      <input type="file" id="resume-upload" name="resume" accept=".pdf" required="">
+
+      <label for="job-description">Job Description:</label>
+      <textarea id="job-description" name="job_description" rows="8" placeholder="Job description here..."
+        required=""></textarea>
+
+      <button type="submit" class="analyze-btn">Analyze</button>
+    </form>
+
+
+
+    <div id="results" class="analysis-results" {% if show_results %}style="display: block;" {% else
+      %}style="display: none;" {% endif %}>
+
+      <label class="section-label">Resume Score:</label>
+      <div class="result-box">
+        <h3><span id="score">{{ resume_score }}</span></h3>
+        <div class="score-bar">
+          <div class="score-fill"></div>
+        </div>
+      </div>
+
+      <label class="section-label">Matched Skills:</label>
+      <div class="result-box scrollable-box">
+        <div id="matched-skills">
+          {% if matched_skills %}
+          <ul>
+            {% for skill in matched_skills %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No matched skills found.</p>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <label class="section-label">Missing Skills:</label>
+      <div class="result-box scrollable-box">
+        <div id="missing-skills">
+          {% if missing_skills %}
+          <ul>
+            {% for skill in missing_skills %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No missing skills found.</p>
+          {% endif %}
+        </div>
+
+      </div>
+      <label class="section-label">Candidate Email:</label>
+      <div class="result-box">
+        <h4>
+          {% if contact_email %}
+          <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+          {% else %}
+          <span>No contact email available.</span>
+          {% endif %}
+        </h4>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</body>
+
+</html>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const scoreElement = document.getElementById("score");
+    const fillElement = document.querySelector(".score-fill");
+
+    if (scoreElement && fillElement) {
+      const score = parseInt(scoreElement.innerText) || 0; // defaults to 0 if NaN
+
+      fillElement.style.width = score + "%";
+
+      // Optional: dynamic color based on score
+      if (score < 40) {
+        fillElement.style.backgroundColor = "red";
+      } else if (score < 70) {
+        fillElement.style.backgroundColor = "orange";
+      } else {
+        fillElement.style.backgroundColor = "green";
+      }
+    }
+  });
+</script>

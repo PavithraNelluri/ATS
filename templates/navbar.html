@@ -1,0 +1,50 @@
+<html><head></head><body><nav class="navbar">
+  <div class="navbar-left">
+    <div class="navbar-brand-wrap">
+      <span class="brand-text">JobNexus</span>
+    </div>
+    <button id="toggle-button" class="menu-toggle" aria-label="Toggle navigation">
+      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+  </div>
+
+
+  <div class="navbar-right" id="navbar-links">
+    {% if request.path in [url_for('job_seeker'),url_for('js_view_uploads'),url_for('share_resume')] %}
+      <!-- Job Seeker View -->
+      <a href="{{ url_for('job_seeker') }}" class="nav-link {% if request.path == url_for('job_seeker') %}active{% endif %}">Resume Analyzer</a>
+      <a href="{{ url_for('js_view_uploads') }}" class="nav-link {% if request.path == url_for('js_view_uploads') %}active{% endif %}">History</a>
+      <a href="#" class="nav-link" onclick="confirmLogout(event)">Logout</a>
+
+    {% elif request.path in [url_for('recruiter_analyser'), url_for('view_uploads'),url_for('show_js_to_recru')] %}
+      <!-- Recruiter View -->
+      <a href="{{ url_for('recruiter_analyser') }}" class="nav-link {% if request.path == url_for('recruiter_analyser') %}active{% endif %}">Resume Analyzer</a>
+      <a href="{{ url_for('show_js_to_recru') }}" class="nav-link {% if request.path == url_for('show_js_to_recru') %}active{% endif %}">Find Talent</a>
+      <a href="{{ url_for('view_uploads') }}" class="nav-link {% if request.path == url_for('view_uploads') %}active{% endif %}">History</a>
+      <a href="#" class="nav-link" onclick="confirmLogout(event)">Logout</a>
+
+    {% elif request.path in [url_for('jobseeker_auth'), url_for('recruiter_auth')] %}
+      <!-- Login Pages -->
+      <a href="{{ url_for('home') }}" class="nav-link back-home">← Back to Home</a>
+    {% endif %}
+    
+  </div>
+
+  <form id="logout-form" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+</nav>
+
+<script>
+  document.getElementById('toggle-button').addEventListener('click', function () {
+    document.getElementById('navbar-links').classList.toggle('show');
+  });
+
+  function confirmLogout(event) {
+    event.preventDefault();
+    if (confirm("Are you sure you want to log out?")) {
+      document.getElementById('logout-form').submit();
+    }
+  }
+</script>
+</body></html>

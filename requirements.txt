@@ -1,0 +1,9 @@
+flask
+dotenv 
+langchain_core
+flask_mysqldb
+flask_mail
+flask_wtf
+bcrypt
+langchain_groq
+fitz

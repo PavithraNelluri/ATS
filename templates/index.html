@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JobNexus| Find Talent  Opportunity</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+   <!-- Flash Message Container -->
+  <div id="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+      <div class="flash-box flash-{{ category }}">
+        <span class="flash-close" onclick="this.parentElement.remove()">×</span>
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="wrapper">
+    <div class="image-section">
+      <img src="{{ url_for('static', filename='images/home_backimage.jpg') }}" alt="Job portal illustration">
+    </div>
+    <main class="content-section">
+      <header>
+        <h1 class="site-title">Welcome to <span>JobNexus</span></h1>
+        <p class="tagline">Your Complete hub to find <b>JOB</b> and <b>TALENT</b></p>
+      </header>
+      <nav class="main-options">
+        <a href="{{ url_for('recruiter_auth') }}" class="btn recruiter-btn">Recruiter</a>
+        <a href="{{ url_for('jobseeker_auth') }}" class="btn jobseeker-btn">Job Seeker</a>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const flashBoxes = document.querySelectorAll('.flash-box');
+      flashBoxes.forEach(box => {
+        setTimeout(() => {
+          box.remove();
+        }, 6800); // Match fadeout + shrink animation
+      });
+    });
+  </script>
+
+
+</body></html>

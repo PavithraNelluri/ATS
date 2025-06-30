@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job Seeker Auth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jobseeker_auth.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  {% include 'navbar.html' %}
+
+  <div class="auth-container" id="auth-box">
+    <h2 id="form-title">Job Seeker Login</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+     
+    <form id="auth-form" method="POST" action="{{ url_for('login') }}">
+    
+      <div class="input-wrapper">
+        <input type="email" name="email" placeholder="Email" id="login-email" required />
+        <i class="fas fa-envelope icon"></i>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="password" name="password" placeholder="Password" id="password" required />
+        <i class="fas fa-eye icon toggle-password" onclick="togglePassword()"></i>
+      </div>
+
+      <div id="forgot-password-container" class="forgot-password-container">
+        <a href="#" class="forgot-password-link" id="forgot-password-link">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="btn jobseeker-btn">Login</button>
+    </form>
+
+    <p class="toggle-link">
+      Don't have an account?
+      <a href="#" onclick="toggleForm()">Sign Up</a>
+    </p>
+  </div>  
+
+  <script>
+    
+    const formTitle = document.getElementById('form-title');
+    const form = document.getElementById('auth-form');
+    const toggleLink = document.querySelector('.toggle-link a');
+    const submitBtn = form.querySelector('button');
+    const forgotPasswordContainer = document.getElementById('forgot-password-container');
+
+    let isLogin = true;
+
+    const loginAction = "{{ url_for('login') }}";
+    const signupAction = "{{ url_for('signup') }}";
+  
+    function toggleForm() {
+      isLogin = !isLogin;
+      formTitle.textContent = isLogin ? 'Job Seeker Login' : 'Job Seeker Sign Up';
+      submitBtn.textContent = isLogin ? 'Login' : 'Sign Up';
+      toggleLink.textContent = isLogin ? 'Sign Up' : 'Login';
+      toggleLink.previousSibling.textContent = isLogin
+        ? "Don't have an account?"
+        : 'Already have an account?';
+  
+      forgotPasswordContainer.style.display = isLogin ? 'block' : 'none';
+      form.action = isLogin ? loginAction : signupAction;
+    }
+
+    document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      if (!email) {
+        alert('Please enter your email first.');
+        return;
+      }
+      // Redirect to forgot_password page with email query param
+      window.location.href = "{{ url_for('forgot_password') }}" + "?email=" + encodeURIComponent(email);
+    });
+
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const icon = passwordField.nextElementSibling;
+      const isPassword = passwordField.type === 'password';
+
+      passwordField.type = isPassword ? 'text' : 'password';
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Resume Uploads</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="../static/css/view_uploads.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  {% include 'navbar.html' %}
+  <div class="uploads-container">
+    <h2 class="uploads-title">History</h2>
+
+    <form method="POST" class="search-form" action="{{ url_for('js_view_uploads') }}">
+        <input type="text" name="search" placeholder="Search by job role" value="{{ search_query }}" class="input-field">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+
+    {% if uploads %}
+      <div class="table-wrapper">
+        <table class="uploads-table">
+          <thead>
+            <tr>
+              <th>Job Role</th>
+              <th>Resume</th>
+              <th>Resume Score</th>
+              <th>Skills</th>
+              <th>Missing Skills</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for upload in uploads %}
+            <tr>
+              <td>{{ upload.jobrole }}</td>
+              <td>
+                <a href="{{ url_for('serve_resume', filename=upload.filename) }}" target="_blank">View</a>
+              </td>
+              <td>{{ upload.score }}%</td>
+              <td>
+                <ul>
+                  {% for skill in upload.skills %}
+                    <li>{{ skill }}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  {% for ms in upload.missing_skills %}
+                    <li>{{ ms }}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="no-records">No resume uploads found.</div>
+    {% endif %}
+  </div>
+</body>
+</html>
