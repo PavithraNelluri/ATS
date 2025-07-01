@@ -1,11 +1,10 @@
-drop database ATP;
-create database ATP;
-use  ATP;
+create database JobNexus;
+use  JobNexus;
 
 create table job_seeker(
 js_id int auto_increment primary key,
 js_email varchar(100) not null unique, -- email provided for login
--- bcrypt hashes are 60 chars(doubt)
+-- bcrypt hashes are 60 chars
 js_password CHAR(255) NOT NULL);
 
 
