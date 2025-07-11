@@ -6,5 +6,5 @@ flask_mail
 flask_wtf
 bcrypt
 langchain_groq
-fitz
+PyMuPDF
 gunicorn
