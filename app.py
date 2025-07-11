@@ -23,10 +23,7 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 #Modules for Database
-import pymysql
-pymysql.install_as_MySQLdb()
-
-from flask_mysqldb_pymysql import MySQL
+from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 
