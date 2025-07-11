@@ -7,3 +7,4 @@ flask_wtf
 bcrypt
 langchain_groq
 fitz
+gunicorn
