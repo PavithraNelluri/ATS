@@ -23,17 +23,19 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 #Modules for Database
-from flask_mysqldb import MySQL
+import pymysql
+pymysql.install_as_MySQLdb()
 
-
+from flask_mysqldb_pymysql import MySQL
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 
-# MySQL Config
+# MySQL Config using .env
 app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
 app.config['MYSQL_USER'] = os.getenv("MYSQL_USER")
 app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD")
 app.config['MYSQL_DB'] = os.getenv("MYSQL_DB")
+
 mysql = MySQL(app)
 
 # Mail Config
