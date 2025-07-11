@@ -1,7 +1,8 @@
 flask
 dotenv 
 langchain_core
-flask_mysqldb
+flask-mysqldb-pymysql
+pymysql
 flask_mail
 flask_wtf
 bcrypt
